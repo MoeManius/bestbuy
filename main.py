@@ -1,40 +1,42 @@
 from products import Product
+from store import Store
 
 def main():
     try:
-        # Test creation of a product
+        # Create some products
         product1 = Product("MacBook Air M2", 999.99, 10)
-        print(product1.show())
+        product2 = Product("iPhone 13", 799.99, 5)
+        product3 = Product("Apple Watch", 399.99, 20)
 
-        # Test getting quantity
-        print("Quantity:", product1.get_quantity())
+        # Create a store and add products to it
+        store = Store()
+        store.add_product(product1)
+        store.add_product(product2)
+        store.add_product(product3)
 
-        # Test setting quantity
-        product1.set_quantity(5)
-        print("Updated Quantity:", product1.get_quantity())
+        # Display all active products in the store
+        print("All active products in the store:")
+        for product in store.get_all_products():
+            print(product.show())
 
-        # Test buying product
-        total_price = product1.buy(2)
-        print("Total price for 2 units:", total_price)
-        print(product1.show())
+        # Get the total quantity of items in the store
+        print("Total quantity of items in the store:", store.get_total_quantity())
 
-        # Test buying more than available quantity
-        try:
-            product1.buy(10)
-        except Exception as e:
-            print("Exception:", e)
+        # Create a shopping list and place an order
+        shopping_list = [(product1, 2), (product3, 5)]
+        total_price = store.order(shopping_list)
+        print("Total price for the order:", total_price)
 
-        # Test deactivating and reactivating product
-        product1.deactivate()
-        print("Is product active?", product1.is_active())
-        product1.activate()
-        print("Is product active?", product1.is_active())
+        # Display all active products in the store after the order
+        print("All active products in the store after the order:")
+        for product in store.get_all_products():
+            print(product.show())
 
-        # Test invalid product creation
-        try:
-            invalid_product = Product("", -100, -5)
-        except ValueError as e:
-            print("Exception:", e)
+        # Test removing a product
+        store.remove_product(product2)
+        print("After removing iPhone 13, all active products in the store:")
+        for product in store.get_all_products():
+            print(product.show())
 
     except Exception as e:
         print("An error occurred:", e)
